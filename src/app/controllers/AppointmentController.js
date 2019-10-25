@@ -63,6 +63,15 @@ class AppointmentController {
         .status(401)
         .json({ error: 'You can only create appointments with providers' });
     }
+    /**
+     * Check if the user is the same provider
+     */
+
+    if (provider_id === req.userId) {
+      return res
+        .status(401)
+        .json({ error: 'not allowed scheduling for same provider' });
+    }
 
     /**
      * Check for past dates
@@ -101,6 +110,7 @@ class AppointmentController {
      */
 
     const user = await User.findByPk(req.userId);
+
     const formatteDate = format(hourStart, "'dia' dd 'de' MMMM',ás ' H:mm'h'", {
       locale: pt,
     });
